@@ -1,6 +1,6 @@
 # tennu-DBLogger 1.0.0
 
-A database logging utility for the [tennu](https://github.com/Tennu/tennu) irc framework.
+A database driven message logging plugin for the [tennu](https://github.com/Tennu/tennu) irc framework.
 
 tennu-DBLogger uses [knex](http://knexjs.org/) on its backend. This means that if you wish to change from the default Sqlite3 DB you will have to follow their documentation and update the configuration below. I have provided a couple of examples.
 

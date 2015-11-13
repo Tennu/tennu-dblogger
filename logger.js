@@ -1,15 +1,14 @@
-function logger(knexContext, migrationPath, client)
-{
-    return MigrateAndSeed(knexContext, migrationPath, client).then(function(){
+function logger(knexContext, migrationPath, client) {
+    return MigrateAndSeed(knexContext, migrationPath, client).then(function() {
         return {
             knexContext: knexContext,
             addMessage: addMessage,
-            addTopic:addTopic
+            addTopic: addTopic
         };
     });
 }
 
-function addMessage(fromNick, message, messageType, channel){
+function addMessage(fromNick, message, messageType, channel) {
     return this.knexContext('message').insert({
         FromNick: fromNick,
         Message: message,
@@ -19,7 +18,7 @@ function addMessage(fromNick, message, messageType, channel){
     });
 }
 
-function addTopic(topic, setByNick, channel){
+function addTopic(topic, setByNick, channel) {
     return this.knexContext('topic').insert({
         SetByNick: setByNick,
         Content: topic,
@@ -30,7 +29,9 @@ function addTopic(topic, setByNick, channel){
 
 // private
 function MigrateAndSeed(knex, migrationPath, client) {
-    return knex.migrate.latest({directory: migrationPath}).then(function(){
+    return knex.migrate.latest({
+        directory: migrationPath
+    }).then(function() {
         client._logger.notice('DBLogger database initialized.');
     });
 }
