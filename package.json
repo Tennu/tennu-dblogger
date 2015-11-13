@@ -1,6 +1,6 @@
 {
   "name": "tennu-dblogger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A database logging plugin for the tennu IRC framework.",
   "main": "plugin.js",
   "repository": {
