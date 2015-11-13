@@ -1,17 +1,14 @@
-var Promise = require('bluebird'),
-    path = require('path'),
-    format = require('util').format;
-
-// Get the path of the module so we can access its assets
-const moduleHomeDir = __dirname;
-const migrationPath = path.join(moduleHomeDir, 'migrations');
+var Promise = require('bluebird');
 
 var dbLogger = {
     role: 'dblogger',
+    requiresRoles: ['dbcore'],
     init: function(client, imports) {
 
-        var knexContext = require('knex')(client.config('database'));
-        const logger = require('./logger')(knexContext, migrationPath, client);
+        // dbcore is a promise. It is returned after migrations are complete.
+        const dbLoggerPromise = imports.dbcore.then(function(knex) {
+            return require('./logger')(knex)
+        });
 
         const handleMessage = function(IRCMessage) {
             if (IRCMessage.command === 'notice') {
@@ -27,20 +24,20 @@ var dbLogger = {
             }
 
             var normalizedMessage = (IRCMessage.message || null);
-            return logger.then(function(loggingUtilities) {
-                loggingUtilities.addMessage(IRCMessage.nickname, normalizedMessage, IRCMessage.command, IRCMessage.channel).then(function() {
+            return dbLoggerPromise.then(function(logger) {
+                return logger.addMessage(IRCMessage.nickname, normalizedMessage, IRCMessage.command, IRCMessage.channel).then(function() {
                     // Supress returning the ID of the inserted record
                     return;
                 });
-            });
+            })
         }
 
         var handleTopic = function(IRCMessage) {
-            return logger.then(function(loggingUtilities) {
-                return loggingUtilities.addTopic(IRCMessage.topic, IRCMessage.nickname, IRCMessage.channel).then(function() {
+            return dbLoggerPromise.then(function(logger) {
+                return logger.addTopic(IRCMessage.topic, IRCMessage.nickname, IRCMessage.channel).then(function() {
                     // Supress returning the ID of the inserted record
                     return;
-                });
+                })
             });
         }
 
@@ -56,8 +53,7 @@ var dbLogger = {
                 "topic": handleTopic
             },
             exports: {
-                dblogger: logger,
-                knexContext: knexContext
+                dbLoggerPromise: dbLoggerPromise
             }
         };
     }

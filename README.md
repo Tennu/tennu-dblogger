@@ -1,35 +1,8 @@
-# tennu-DBLogger 1.0.0
+# tennu-dblogger 1.0.0
 
 A database driven message logging plugin for the [tennu](https://github.com/Tennu/tennu) irc framework.
 
-tennu-DBLogger uses [knex](http://knexjs.org/) on its backend. This means that if you wish to change from the default Sqlite3 DB you will have to follow their documentation and update the configuration below. I have provided a couple of examples.
-
-### Configuration
-
-Add this to your tennu configuration (be sure to strip comments):
-
-```javascript
-"database": {
-    "client": "sqlite3",
-    "connection": {
-      "filename": "./tennu.sqlite"
-    }
-}
-```
-
-```javascript
-// make sure to `npm install mysql2`
-"database": {
-    "client": "mysql2",
-    "connection": {
-        "host": "localhost",
-        "user": "tennu-bot",
-        "password": "password",
-        // make sure this db actually exists, and that your user has access to it
-        "database": "tennu"
-    }
-  }
-```
+tennu-dblogger requires [tennu-dbcore](https://github.com/LordWingZero/tennu-dbcore)
 
 
 ### Features
@@ -45,9 +18,10 @@ Logs these events
 
 ### Required by
 
-This plugin is required by the following plugins.
 - tennu-advanced-seen (comming soon)
 - tennu-title (comming soon)
+- tennu-tell (comming soon)
+- tennu-response (comming soon)
 
 ### Installing Into Tennu
 

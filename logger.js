@@ -1,11 +1,9 @@
-function logger(knexContext, migrationPath, client) {
-    return MigrateAndSeed(knexContext, migrationPath, client).then(function() {
-        return {
-            knexContext: knexContext,
-            addMessage: addMessage,
-            addTopic: addTopic
-        };
-    });
+function logger(knexContext) {
+    return {
+        knexContext: knexContext,
+        addMessage: addMessage,
+        addTopic: addTopic
+    };
 }
 
 function addMessage(fromNick, message, messageType, channel) {
@@ -24,15 +22,6 @@ function addTopic(topic, setByNick, channel) {
         Content: topic,
         Channel: channel,
         Timestamp: new Date()
-    });
-}
-
-// private
-function MigrateAndSeed(knex, migrationPath, client) {
-    return knex.migrate.latest({
-        directory: migrationPath
-    }).then(function() {
-        client._logger.notice('DBLogger database initialized.');
     });
 }
 

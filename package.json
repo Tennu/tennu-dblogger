@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "description": "A database logging plugin for the tennu IRC framework.",
   "main": "plugin.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LordWingZero/tennu-dblogger"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Victorio Berra",
   "license": "WTFPL",
   "dependencies": {
-    "bluebird": "^3.0.5",
-    "knex": "^0.9.0",
-    "sqlite3": "^3.1.1"
+    "bluebird": "^3.0.5"
   }
 }
