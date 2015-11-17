@@ -51,7 +51,6 @@ var dbLogger = {
                 "part": handleMessage,
                 "quit": handleMessage,
                 "kick": handleMessage,
-                "nick": handleMessage,
                 "topic": handleTopic
             },
             exports: {
