@@ -13,8 +13,6 @@ var dbLogger = {
 
         const handleMessage = function(IRCMessage) {
             
-            console.log(IRCMessage);
-            
             if (IRCMessage.command === 'notice') {
                 if (!IRCMessage.nickname) {
                     IRCMessage.nickname = IRCMessage.channel;
@@ -24,12 +22,7 @@ var dbLogger = {
                     IRCMessage.message = IRCMessage.reason;
                 }
             } else if(IRCMessage.command === 'kick'){
-                if(IRCMessage.reason)
-                {
-                    IRCMessage.message = format('%s kicked %s for %s', IRCMessage.kicker, IRCMessage.kicked, IRCMessage.reason);
-                } else {
-                    IRCMessage.message = format('%s kicked %s for %s', IRCMessage.nickname, IRCMessage.kicked, IRCMessage.kicker);
-                }
+                IRCMessage.message = format('%s kicked %s for %s', IRCMessage.kicker, IRCMessage.kicked, IRCMessage.reason);
             }
 
             var normalizedMessage = (IRCMessage.message || null);
