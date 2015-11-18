@@ -1,4 +1,3 @@
-var Promise = require('bluebird');
 var format = require('util').format;
 
 var dbLogger = {
