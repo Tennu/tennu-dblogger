@@ -1,26 +1,33 @@
 var format = require('util').format;
+var path = require('path');
 
 var dbLogger = {
     role: 'dblogger',
     requiresRoles: ['dbcore'],
     init: function(client, imports) {
 
-        // dbcore is a promise. It is returned after migrations are complete.
-        const dbLoggerPromise = imports.dbcore.then(function(knex) {
-            return require('./logger')(knex)
+        const knex = imports.dbcore.knex;
+
+        var dbLoggerPromise = knex.migrate.latest({
+                tableName: 'tennu_dblogger_knex_migrations',
+                directory: path.join(__dirname, 'migrations')
+            }).then(function() {
+            return require('./lib/logger')(knex);
         });
 
         const handleMessage = function(IRCMessage) {
-            
+
             if (IRCMessage.command === 'notice') {
                 if (!IRCMessage.nickname) {
                     IRCMessage.nickname = IRCMessage.channel;
                 }
-            } else if (IRCMessage.command === 'part' || IRCMessage.command === 'quit') {
+            }
+            else if (IRCMessage.command === 'part' || IRCMessage.command === 'quit') {
                 if (!IRCMessage.reason) {
                     IRCMessage.message = IRCMessage.reason;
                 }
-            } else if(IRCMessage.command === 'kick'){
+            }
+            else if (IRCMessage.command === 'kick') {
                 IRCMessage.message = format('%s kicked %s for %s', IRCMessage.kicker, IRCMessage.kicked, IRCMessage.reason);
             }
 
@@ -44,13 +51,13 @@ var dbLogger = {
 
         return {
             handlers: {
-                "privmsg": handleMessage,
-                "notice": handleMessage,
-                "join": handleMessage,
-                "part": handleMessage,
-                "quit": handleMessage,
-                "kick": handleMessage,
-                "topic": handleTopic
+                'privmsg': handleMessage,
+                'notice': handleMessage,
+                'join': handleMessage,
+                'part': handleMessage,
+                'quit': handleMessage,
+                'kick': handleMessage,
+                'topic': handleTopic
             },
             exports: {
                 dbLoggerPromise: dbLoggerPromise
