@@ -17,6 +17,6 @@
     "bluebird": "^3.0.5"
   },
   "peerDependencies": {
-    "tennu-dbcore": "^2"
+    "tennu-dbcore": "^3"
   }
 }
